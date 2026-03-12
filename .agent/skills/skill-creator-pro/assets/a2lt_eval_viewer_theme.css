@@ -1,0 +1,129 @@
+/* a2lt_eval_viewer_theme.css - Tema Neon/Platino para reportes HTML estáticos */
+:root {
+  --obsidian: #020617; /* Fondo oscuro profundo */
+  --indigo-neon: #6366f1; /* Acentos neón */
+  --platino: #e2e8f0; /* Texto principal y elementos claros */
+  --gris-oscuro: #1e293b; /* Para paneles secundarios */
+  --borde: #334155;
+}
+
+body {
+  background-color: var(--obsidian);
+  color: var(--platino);
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: rgba(2, 6, 23, 0.9);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+  border: 1px solid var(--borde);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--indigo-neon);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--borde);
+  padding-bottom: 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background-color: var(--gris-oscuro);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+th {
+  background-color: var(--indigo-neon);
+  color: var(--obsidian);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 1rem;
+  text-align: left;
+}
+
+td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--borde);
+  color: var(--platino);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+/* Tarjetas de métricas */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.metric-card {
+  background: linear-gradient(145deg, #0f172a, var(--obsidian));
+  border: 1px solid var(--indigo-neon);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.metric-card .value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--indigo-neon);
+  line-height: 1.2;
+}
+
+.metric-card .label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--platino);
+  opacity: 0.8;
+}
+
+/* Encabezados de sección */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 2rem 0 1rem;
+}
+
+.section-header .icon {
+  font-size: 1.8rem;
+  color: var(--indigo-neon);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  .container {
+    padding: 1rem;
+  }
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+}

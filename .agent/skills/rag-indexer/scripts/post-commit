@@ -1,0 +1,38 @@
+#!/bin/sh
+# Git Post-Commit Hook — La Forja RAG Auto-Indexer
+# Instalar: copiar este archivo a .git/hooks/post-commit
+# Requisito: .venv con chromadb instalado
+#
+# Este hook re-indexa ChromaDB automáticamente después de cada commit
+# que modifique archivos relevantes para el índice RAG.
+
+# Detectar OS y configurar path del python del venv
+if [ -f ".venv/Scripts/python.exe" ]; then
+    PYTHON=".venv/Scripts/python.exe"
+elif [ -f ".venv/bin/python" ]; then
+    PYTHON=".venv/bin/python"
+else
+    echo "[RAG-HOOK] WARN: .venv not found. Skipping RAG re-index."
+    exit 0
+fi
+
+INDEXER=".agent/skills/rag-indexer/scripts/reindex.py"
+
+if [ ! -f "$INDEXER" ]; then
+    echo "[RAG-HOOK] WARN: reindex.py not found. Skipping."
+    exit 0
+fi
+
+# Verificar si archivos relevantes cambiaron en este commit
+CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+
+# Patrones que disparan re-indexación
+TRIGGER_PATTERNS="SKILL.md|AGENT.md|README.md|AUDIT-|ADR-|GEMINI.md|manifest.json"
+
+if echo "$CHANGED_FILES" | grep -qE "$TRIGGER_PATTERNS"; then
+    echo "[RAG-HOOK] Archivos relevantes detectados. Re-indexando..."
+    $PYTHON "$INDEXER" 2>&1 | tail -3
+    echo "[RAG-HOOK] Re-indexación completada."
+else
+    echo "[RAG-HOOK] No hay cambios relevantes para RAG. Skip."
+fi

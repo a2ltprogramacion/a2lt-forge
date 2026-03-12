@@ -1,0 +1,64 @@
+# Configuración RAG — La Forja
+# Header: Español | Body: English
+
+vectordb:
+  provider: chromadb
+  persist_directory: ./rag/index
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2
+  notes: "Modelo open source. Sin API keys requerida. Embeddings locales para máxima privacidad."
+
+collections:
+  - name: proyecto-docs
+    description: "AGENTS.md + SKILL.md + AGENT.md + README.md del Core, Catálogo y Proyectos"
+    sources:
+      - ./.agent/
+      - ./catalogo/
+      - ./output/
+      - ./AGENTS.md
+    chunk_size: 512
+    chunk_overlap: 64
+    extraction_strategy: "markdown_structure"
+  
+  - name: decisiones-arq
+    description: "ADRs + AUDITs + journal entries (patterns, field feedback)"
+    sources:
+      - ./rag/sources/adrs/
+      - ./rag/sources/sessions/
+      - ./.agent/memory/journal/entries/
+    chunk_size: 1024
+    chunk_overlap: 128
+    extraction_strategy: "full_document"
+
+query_defaults:
+  top_k: 5
+  min_score: 0.5
+  fallback_to_web: true
+  fallback_provider: duckduckgo
+  notes: "Calibrado para all-MiniLM-L6-v2 + ChromaDB cosine. Score 0.5+ = relevante. Si score < 0.5: activar web-search."
+
+indexing:
+  auto_reindex_on_deploy: true
+  reindex_interval_hours: 24
+  retention_policy: "keep_last_30_days"
+
+failure_tracking:
+  categories:
+    - api-error          # HTTP 403/404/500, timeout, rate limiting, endpoint incorrecto
+    - dependency-missing # Skill no en manifest, paquete no instalado, versión incompatible
+    - validation-failure # YAML inválido, estructura incorrecta, test fallido
+    - design-flaw        # Patrón incorrecto, acoplamiento circular, solapamiento
+    - environment        # Credenciales faltantes, permisos, .env no definido
+  severity_levels: [critical, high, medium, low]
+  assignment_rule: "Asignar categoría del root cause, no del síntoma"
+  chunk_metadata_required:
+    - tipo               # audit-success | audit-failure | adr
+    - component_name     # nombre-del-componente
+    - status             # exitoso | fracaso | parcial
+    - failure_category   # null o una de las categorías
+    - paso_critico       # null o paso donde ocurrió el fallo
+    - fecha              # YYYY-MM-DD
+
+performance:
+  max_concurrent_queries: 3
+  query_timeout_seconds: 30
+  index_build_timeout_seconds: 300

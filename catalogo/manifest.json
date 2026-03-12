@@ -1,0 +1,61 @@
+{
+  "ecosystem": "La Forja - Catálogo",
+  "version": "2.3.0",
+  "description": "Manifest of production-ready agents and skills in the Catalog layer (./catalogo/)",
+  "last_updated": "2026-03-11T14:30:00Z",
+  "last_author": "Argenis",
+  "components": [
+    {
+      "name": "ghl-list-ai-agents",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "integration",
+      "path": "./catalogo/skills/ghl-list-ai-agents",
+      "status": "active",
+      "description": "Retrieves list of Conversation AI agents from GoHighLevel account. Primary use: agent auditing, deployment verification, and metadata collection for orchestration workflows.",
+      "dependencies": {
+        "internal": [],
+        "external": [
+          {"name": "python-dotenv", "version": ">=1.0.0", "reason": "Load GHL credentials from .env"}
+        ]
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "external_apis": [
+        {"service": "GoHighLevel API v2", "endpoint": "https://services.leadconnectorhq.com/conversation-ai/agents/search", "auth": "Bearer token"}
+      ],
+      "notes": "Production-ready Catálogo skill. Requires GHL_API_KEY and GHL_LOCATION_ID in .env. Zero external Python dependencies for core functionality (urllib is stdlib).",
+      "audit": {"methodology": "skill-creator-pro Pasos 0-4", "date": "2026-03-11", "verdict": "ACEPTADA"}
+    },
+    {
+      "name": "ghl-list-calendars",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "integration",
+      "path": "./catalogo/skills/ghl-list-calendars",
+      "status": "active",
+      "description": "Retrieves list of all calendars from GoHighLevel account using API v2. Primary use: calendar discovery, availability verification, and metadata collection for scheduling automation workflows.",
+      "dependencies": {
+        "internal": [],
+        "external": [
+          {"name": "python-dotenv", "version": ">=1.0.0", "reason": "Load GHL credentials from .env"}
+        ]
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "external_apis": [
+        {"service": "GoHighLevel API v2", "endpoint": "https://services.leadconnectorhq.com/calendars/?locationId=...", "auth": "Bearer token"}
+      ],
+      "notes": "Production-ready Catálogo skill. Requires GHL_API_KEY and GHL_LOCATION_ID in .env. Zero external Python dependencies (urllib is stdlib). Fully functional as of 11 marzo 2026.",
+      "audit": {"methodology": "skill-creator-pro Pasos 0-7", "date": "2026-03-11", "verdict": "ACEPTADA - PRODUCCIÓN"}
+    }
+  ],
+  "metadata": {
+    "source_url": "./catalogo/manifest.json",
+    "is_canonical_source": true,
+    "schema_version": "1.0.0",
+    "notes": "Fuente de verdad para componentes reutilizables listos para empaquetado. Solo componentes con status=active o status=draft pueden ser incluidos en paquetes."
+  }
+}
