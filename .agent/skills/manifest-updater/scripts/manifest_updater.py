@@ -21,12 +21,14 @@ from collections import defaultdict
 VALID_OPERATIONS  = {"init", "add", "update", "deprecate", "check-dependents", "validate"}
 VALID_PLANES      = {"agent", "catalogo", "package", "all"}
 VALID_KINDS       = {"skill", "agent", "workflow"}
-VALID_STATUSES    = {"active", "deprecated", "experimental"}
+VALID_STATUSES    = {"active", "draft", "deprecated", "pending_validation"}
 VALID_TYPES       = {"backend", "frontend", "integration", "utility"}
 VALID_TIERS       = {"vcard", "authority", "enterprise", "all"}
 
-REQUIRED_FIELDS   = {"name", "version", "kind", "status", "path", "dependencies"}
-OPTIONAL_FIELDS   = {"type", "tier", "compatibility", "description"}
+# Schema v2.0.0 alineado con manifest.json en producción
+REQUIRED_FIELDS   = {"name", "version", "kind", "type", "status", "path", "description"}
+OPTIONAL_FIELDS   = {"dependencies", "compatibility", "notes", "tier"}
+LEGACY_PATH_PREFIX = "./.agent/"  # Prohibido — usar ./agent/ en su lugar
 
 SEMVER_RE         = re.compile(r'^\d+\.\d+\.\d+$')
 KEBAB_RE          = re.compile(r'^[a-z0-9][a-z0-9-]*[a-z0-9]$')
@@ -120,11 +122,26 @@ def init_manifest(path: str, plane: str, dry_run: bool = False) -> None:
               "       Usa --operation validate para auditarlo.", file=sys.stderr)
         sys.exit(2)
 
+    plane_labels = {
+        "agent":    "La Forja - Core Toolkit",
+        "catalogo": "La Forja - Catálogo",
+        "package":  project_name or "La Forja - Paquete",
+    }
     data = {
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "plane": plane,
+        "ecosystem": plane_labels.get(plane, "La Forja"),
+        "version": "1.0.0",
+        "description": f"Manifest of {plane_labels.get(plane, plane)} layer.",
         "last_updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "components": []
+        "last_author": "Argenis",
+        "components": [],
+        "metadata": {
+            "source_url": f"./{'agent' if plane == 'agent' else plane}/manifest.json",
+            "is_canonical_source": True,
+            "schema_version": "2.0.0",
+            "notes": "Actualizar SOLO al desplegar exitosamente (Paso 7 §7.2/7.3)."
+        }
     }
 
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -160,8 +177,22 @@ def validate_component_schema(comp: dict) -> list[str]:
     if "status" in comp and comp["status"] not in VALID_STATUSES:
         errors.append(f"'status' inválido: {comp['status']}. Válidos: {sorted(VALID_STATUSES)}")
 
-    if "dependencies" in comp and not isinstance(comp["dependencies"], list):
-        errors.append("'dependencies' debe ser una lista (puede ser vacía []).")
+    # dependencies: optional pero si existe debe ser objeto {internal:[], external:[]}
+    if "dependencies" in comp:
+        deps = comp["dependencies"]
+        if not isinstance(deps, dict):
+            errors.append("'dependencies' debe ser un objeto con claves 'internal' y 'external'.")
+        else:
+            for key in ("internal", "external"):
+                if key in deps and not isinstance(deps[key], list):
+                    errors.append(f"'dependencies.{key}' debe ser una lista.")
+
+    # path: detectar ruta legacy
+    if "path" in comp and comp["path"].startswith(LEGACY_PATH_PREFIX):
+        errors.append(
+            f"[RUTA-LEGACY §0.4] 'path' usa prefijo prohibido './.agent/'. "
+            f"Usar './agent/' en su lugar: {comp['path']}"
+        )
 
     # Optional field validation
     if "type" in comp and comp["type"] not in VALID_TYPES:
@@ -231,21 +262,27 @@ def validate_manifest_integrity(
         if version and not SEMVER_RE.match(version):
             warnings.append(f"{prefix} Versión no sigue SemVer: {version}")
 
-    # Dependency resolution (cross-component)
+    # Dependency resolution (cross-component) — schema v2.0.0
     all_names = {c.get("name") for c in components if c.get("status") == "active"}
     for comp in components:
-        for dep in comp.get("dependencies", []):
+        deps = comp.get("dependencies", {})
+        # Solo validar dependencias internas (las externas son paquetes PyPI/npm)
+        if isinstance(deps, dict):
+            internal_deps = deps.get("internal", [])
+        else:
+            internal_deps = deps  # fallback lista plana
+        for dep in internal_deps:
             dep_name = dep.get("name") if isinstance(dep, dict) else dep
             optional  = dep.get("optional", False) if isinstance(dep, dict) else False
             if dep_name and dep_name not in all_names:
                 if optional:
                     warnings.append(
-                        f"[{comp.get('name')}] Dependencia opcional no encontrada "
-                        f"en este plano: '{dep_name}'"
+                        f"[{comp.get('name')}] Dependencia interna opcional no encontrada "
+                        f"en componentes activos de este plano: '{dep_name}'"
                     )
                 else:
                     warnings.append(
-                        f"[{comp.get('name')}] Dependencia '{dep_name}' no encontrada "
+                        f"[{comp.get('name')}] Dependencia interna '{dep_name}' no encontrada "
                         f"en componentes activos de este manifiesto."
                     )
 
@@ -286,7 +323,13 @@ def find_cycle(components: list[dict]) -> list[str] | None:
         name = comp.get("name")
         if not name:
             continue
-        for dep in comp.get("dependencies", []):
+        deps = comp.get("dependencies", {})
+        # Schema v2.0.0: object; v1.0.0 fallback: flat list
+        if isinstance(deps, dict):
+            all_deps = deps.get("internal", []) + deps.get("external", [])
+        else:
+            all_deps = deps
+        for dep in all_deps:
             dep_name = dep.get("name") if isinstance(dep, dict) else dep
             if dep_name and dep_name in graph:
                 graph[name].append(dep_name)
@@ -351,6 +394,10 @@ def op_add(manifest: dict, component: dict, root: str) -> dict:
         )
         sys.exit(4)
 
+    # Inicializar dependencies como objeto si no viene declarado
+    if "dependencies" not in component:
+        component["dependencies"] = {"internal": [], "external": []}
+
     manifest["components"].append(component)
     print(f"[Manifest] Componente agregado: {component['name']} v{component['version']}")
     return manifest
@@ -392,14 +439,24 @@ def op_deprecate(manifest: dict, name: str) -> dict:
 
 
 def op_check_dependents(manifest: dict, name: str) -> list[str]:
-    """Returns list of active component names that depend on `name`."""
+    """Returns list of active component names that depend on `name`.
+    Handles schema v2.0.0: dependencies = {"internal": [...], "external": [...]}
+    """
     dependents = []
+    name_lower = name.lower()
     for comp in manifest["components"]:
-        if comp.get("status") != "active":
+        if comp.get("status") not in ("active", "draft", "pending_validation"):
             continue
-        for dep in comp.get("dependencies", []):
+        deps = comp.get("dependencies", {})
+        # Schema v2.0.0: object with internal/external keys
+        if isinstance(deps, dict):
+            all_deps = deps.get("internal", []) + deps.get("external", [])
+        else:
+            # Fallback: schema v1.0.0 flat list
+            all_deps = deps
+        for dep in all_deps:
             dep_name = dep.get("name") if isinstance(dep, dict) else dep
-            if dep_name and dep_name.lower() == name.lower():
+            if dep_name and dep_name.lower() == name_lower:
                 dependents.append(comp["name"])
     return dependents
 

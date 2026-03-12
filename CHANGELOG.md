@@ -15,6 +15,24 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/es/).
 
 ---
 
+## [2.4.0] — 2026-03-11
+
+### Agregado
+- **Mecanismos Duros (Hard Locks):** Implementación de barreras operativas estrictas para el Orquestador (evitar asunciones de diseño y despliegues fallidos).
+- **Autoridad de Rutas (§0.4):** Regla de desempate vinculante y prohibición absoluta de la ruta legacy `./.agent/`.
+- **Nuevo Schema de Manifest (v2.0.0):** Soporte para anidación de dependencias (`internal` / `external`) y estricta obligatoriedad de campos.
+
+### Modificado
+- `manifest_updater.py`: Lógica ajustada para soportar Schema v2.0.0, validaciones de ruta legacy y rechazo de asunciones en campos obligatorios.
+- Reglas de escalamiento y auditoría reformateadas para mayor claridad estructural (tablas y listas).
+- Tablas de integración RAG y eventos de indexación.
+
+### Solucionado
+- Subversión del protocolo de parada (Stop-Loss) durante despliegues con validación fallida.
+- Falsas priorizaciones de velocidad sobre integridad arquitectónica en flujos de Forja.
+
+---
+
 ## [2.3.0] — 2026-03-11
 
 ### Agregado

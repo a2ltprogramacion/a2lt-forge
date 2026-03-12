@@ -10,14 +10,20 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/yaml-validator",
+      "path": "./agent/skills/yaml-validator",
       "status": "active",
       "description": "Validates YAML files against JSON schema. Essential for component metadata validation (§3.4).",
       "dependencies": {
         "internal": [],
         "external": [
-          {"name": "pyyaml", "version": ">=6.0"},
-          {"name": "jsonschema", "version": ">=4.17"}
+          {
+            "name": "pyyaml",
+            "version": ">=6.0"
+          },
+          {
+            "name": "jsonschema",
+            "version": ">=4.17"
+          }
         ]
       },
       "compatibility": {
@@ -29,15 +35,21 @@
       "version": "1.0.0",
       "kind": "agent",
       "type": "utility",
-      "path": "./.agent/agents/component-auditor",
+      "path": "./agent/agents/component-auditor",
       "status": "active",
       "description": "Validates La Forja components before deployment. Executes audits in Step 7 of forge dynamics (§7.2, §7.3).",
       "dependencies": {
         "internal": [
-          {"name": "yaml-validator", "version": ">=1.0.0"}
+          {
+            "name": "yaml-validator",
+            "version": ">=1.0.0"
+          }
         ],
         "external": [
-          {"name": "pyyaml", "version": ">=6.0"}
+          {
+            "name": "pyyaml",
+            "version": ">=6.0"
+          }
         ]
       },
       "compatibility": {
@@ -49,7 +61,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/skill-search",
+      "path": "./agent/skills/skill-search",
       "status": "active",
       "description": "Searches external sources for existing skills, agents, templates before forging new components. Activate at Paso 1 of any forge flow.",
       "dependencies": {
@@ -66,12 +78,16 @@
       "version": "2.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/skill-creator-pro",
+      "path": "./agent/skills/skill-creator-pro",
       "status": "active",
       "description": "Meta-skill that generates new skills for La Forja ecosystem. Activate at Paso 3 (Construction phase) of forge flow.",
       "dependencies": {
         "internal": [
-          {"name": "rag-query", "version": ">=1.0.0", "optional": false}
+          {
+            "name": "rag-query",
+            "version": ">=1.0.0",
+            "optional": false
+          }
         ],
         "external": []
       },
@@ -85,12 +101,16 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/brainstorming",
+      "path": "./agent/skills/brainstorming",
       "status": "active",
       "description": "Design ideation skill. Translates requirements and external intelligence into structured design proposals. Activate at Paso 2 of any forge flow.",
       "dependencies": {
         "internal": [
-          {"name": "skill-search", "version": ">=1.0.0", "optional": true}
+          {
+            "name": "skill-search",
+            "version": ">=1.0.0",
+            "optional": true
+          }
         ],
         "external": []
       },
@@ -103,7 +123,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/manifest-updater",
+      "path": "./agent/skills/manifest-updater",
       "status": "active",
       "description": "Manages La Forja's three manifest files: ./.agent/manifest.json, ./catalogo/manifest.json, ./output/[project]/package-manifest.json. Handles add, update, deprecate, and validation operations.",
       "dependencies": {
@@ -119,12 +139,16 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/journal-writer",
+      "path": "./agent/skills/journal-writer",
       "status": "active",
       "description": "Writes, validates, and manages La Forja's institutional memory journal. Activate when closing forge tasks, resolving problems, documenting ADRs, or field feedback.",
       "dependencies": {
         "internal": [
-          {"name": "rag-indexer", "version": ">=1.0.0", "optional": true}
+          {
+            "name": "rag-indexer",
+            "version": ">=1.0.0",
+            "optional": true
+          }
         ],
         "external": []
       },
@@ -138,7 +162,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/rag-query",
+      "path": "./agent/skills/rag-query",
       "status": "active",
       "description": "Queries local ChromaDB index for existing components and patterns. First-pass discovery at Paso 0 of any forge flow.",
       "dependencies": {
@@ -155,7 +179,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/rag-indexer",
+      "path": "./agent/skills/rag-indexer",
       "status": "active",
       "description": "Builds and updates ChromaDB vector index. Activate automatically at Paso 7 post-deployment or manually for re-indexing.",
       "dependencies": {
@@ -172,14 +196,26 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/agent-creator-pro",
+      "path": "./agent/skills/agent-creator-pro",
       "status": "active",
       "description": "Meta-skill that generates new autonomous agents. Activate when operator requests designing orchestrators or coordinators.",
       "dependencies": {
         "internal": [
-          {"name": "rag-query", "version": ">=1.0.0", "optional": false},
-          {"name": "brainstorming", "version": ">=1.0.0", "optional": false},
-          {"name": "yaml-validator", "version": ">=1.0.0", "optional": true}
+          {
+            "name": "rag-query",
+            "version": ">=1.0.0",
+            "optional": false
+          },
+          {
+            "name": "brainstorming",
+            "version": ">=1.0.0",
+            "optional": false
+          },
+          {
+            "name": "yaml-validator",
+            "version": ">=1.0.0",
+            "optional": true
+          }
         ],
         "external": []
       },
@@ -193,7 +229,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./.agent/skills/context7-resolver",
+      "path": "./agent/skills/context7-resolver",
       "status": "active",
       "description": "Integra el servidor MCP context7 para la búsqueda de documentación actualizada y ejemplos de código reales.",
       "dependencies": {
@@ -210,5 +246,7 @@
     "is_canonical_source": true,
     "schema_version": "1.0.0",
     "notes": "Este manifiesto es la fuente de verdad para validación de dependencias en el Core. Actualizar SOLO al desplegar exitosamente (Paso 7 de dinámicas §7.2/7.3)."
-  }
+  },
+  "schema_version": "2.0.0",
+  "plane": "agent"
 }
