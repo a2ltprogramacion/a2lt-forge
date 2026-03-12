@@ -1,0 +1,14 @@
+{
+  "name": "stitch-designer",
+  "version": "1.0.0",
+  "kind": "skill",
+  "status": "active",
+  "path": "./catalogo/skills/stitch-designer",
+  "dependencies": {
+    "internal": [],
+    "external": []
+  },
+  "type": "utility",
+  "tier": "all",
+  "description": "Orquesta y diseña interfaces de usuario utilizando las herramientas del servidor MCP StitchMCP."
+}
