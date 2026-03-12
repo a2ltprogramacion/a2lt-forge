@@ -5,7 +5,7 @@ type: utility
 subtype: skill
 tier: all
 description: |
-  Manages La Forja's three manifest files: ./agent/manifest.json,
+  Manages La Forja's three manifest files: ./.agent/manifest.json,
   ./catalogo/manifest.json, and ./output/[project]/package-manifest.json.
   Handles add, update, deprecate, and full integrity validation operations.
   Activate at Paso 5 of any forge flow after successful deployment, or when
@@ -94,7 +94,7 @@ touching any manifest file.
   "version": "1.0.0",
   "kind": "skill | agent | workflow",
   "status": "active | deprecated | experimental",
-  "path": "./agent/skills/nombre | ./catalogo/skills/nombre",
+  "path": "./.agent/skills/nombre | ./catalogo/skills/nombre",
   "dependencies": []
 }
 ```
@@ -126,7 +126,7 @@ touching any manifest file.
 
 | Manifiesto | Ruta | Plano | Quién lo actualiza |
 |---|---|---|---|
-| Core | `./agent/manifest.json` | Infraestructura interna | Forge flow §7.2/§7.3 — Paso 5 |
+| Core | `./.agent/manifest.json` | Infraestructura interna | Forge flow §7.2/§7.3 — Paso 5 |
 | Catálogo | `./catalogo/manifest.json` | Activos de cliente | Forge flow §7.2/§7.3 — Paso 5 |
 | Paquete | `./output/[proyecto]/package-manifest.json` | Ensamble de proyecto | Flujo de empaquetado §7.4 |
 

@@ -57,7 +57,7 @@ Read this document completely before executing any search.
 
 ## 0. Regla de Cuarentena Absoluta
 
-**DIRECTIVA CRÍTICA:** Ningún componente externo toca `./agent/` ni `./catalogo/`
+**DIRECTIVA CRÍTICA:** Ningún componente externo toca `./.agent/` ni `./catalogo/`
 directamente. Todo lo que se descargue del exterior va **exclusivamente** a
 `./quarantine_lab/[id]/referencias/`. El ecosistema productivo no se contamina.
 

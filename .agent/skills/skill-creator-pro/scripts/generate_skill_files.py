@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # generate_skill_files.py — La Forja / A2LT Soluciones
 # Generates or updates Antigravity skill files from a JSON Blueprint spec.
-# Usage: python generate_skill_files.py --spec '<json>' --output ./agent/skills/
+# Usage: python generate_skill_files.py --spec '<json>' --output ./.agent/skills/
 #        python generate_skill_files.py --file blueprint.json --output ./catalogo/skills/ --force
 
 import os
@@ -125,7 +125,7 @@ def main():
     parser.add_argument(
         "--output",
         default=".",
-        help="Directorio destino (ej: ./agent/skills/ o ./catalogo/skills/)."
+        help="Directorio destino (ej: ./.agent/skills/ o ./catalogo/skills/)."
     )
     parser.add_argument(
         "--force",

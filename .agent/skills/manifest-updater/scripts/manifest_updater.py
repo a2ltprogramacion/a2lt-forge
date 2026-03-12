@@ -28,7 +28,7 @@ VALID_TIERS       = {"vcard", "authority", "enterprise", "all"}
 # Schema v2.0.0 alineado con manifest.json en producción
 REQUIRED_FIELDS   = {"name", "version", "kind", "type", "status", "path", "description"}
 OPTIONAL_FIELDS   = {"dependencies", "compatibility", "notes", "tier"}
-LEGACY_PATH_PREFIX = "./.agent/"  # Prohibido — usar ./agent/ en su lugar
+LEGACY_PATH_PREFIX = "./agent/"  # Prohibido — usar ./.agent/ en su lugar
 
 SEMVER_RE         = re.compile(r'^\d+\.\d+\.\d+$')
 KEBAB_RE          = re.compile(r'^[a-z0-9][a-z0-9-]*[a-z0-9]$')
@@ -125,7 +125,7 @@ def init_manifest(path: str, plane: str, dry_run: bool = False) -> None:
     plane_labels = {
         "agent":    "La Forja - Core Toolkit",
         "catalogo": "La Forja - Catálogo",
-        "package":  project_name or "La Forja - Paquete",
+        "package":  "La Forja - Paquete",
     }
     data = {
         "schema_version": "2.0.0",
@@ -191,7 +191,7 @@ def validate_component_schema(comp: dict) -> list[str]:
     if "path" in comp and comp["path"].startswith(LEGACY_PATH_PREFIX):
         errors.append(
             f"[RUTA-LEGACY §0.4] 'path' usa prefijo prohibido './.agent/'. "
-            f"Usar './agent/' en su lugar: {comp['path']}"
+            f"Usar './.agent/' en su lugar: {comp['path']}"
         )
 
     # Optional field validation

@@ -259,7 +259,7 @@ Writes a new journal entry from a JSON payload and template.
 python scripts/journal_write.py \
   --type forge|problem|adr|pattern|field \
   --payload '{"component_name": "rag-query", ...}' \
-  [--journal-dir ./agent/memory/journal]
+  [--journal-dir ./.agent/memory/journal]
 
 # Exit codes:
 # 0 — Entry written successfully
@@ -274,7 +274,7 @@ Generates a pattern report from all entries since the last report.
 
 ```bash
 python scripts/journal_report.py \
-  [--journal-dir ./agent/memory/journal] \
+  [--journal-dir ./.agent/memory/journal] \
   [--since-entry <filename>]
 
 # Exit codes:
@@ -290,7 +290,7 @@ Text-based search across journal entries (complement to RAG for exact matches).
 python scripts/journal_query.py \
   --term "chromadb" \
   --type problem \
-  [--journal-dir ./agent/memory/journal]
+  [--journal-dir ./.agent/memory/journal]
 
 # Returns: matching entry filenames + first 3 lines of each
 # Exit codes: 0 found, 1 none found, 2 directory error
@@ -302,7 +302,7 @@ python scripts/journal_query.py \
 
 Journal entries feed the `decisiones-arq` ChromaDB collection via `rag-indexer`.
 
-- `rag-indexer` indexes `./agent/memory/journal/entries/` on every deployment
+- `rag-indexer` indexes `./.agent/memory/journal/entries/` on every deployment
 - Query prefix for journal entries in RAG: `[JOURNAL]` — included in each entry's header
 - The `pattern` and `adr` entry types have the highest RAG retrieval value;
   `forge` entries are primarily for audit, not semantic search

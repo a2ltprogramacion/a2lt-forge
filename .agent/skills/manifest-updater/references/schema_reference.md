@@ -73,7 +73,7 @@
   "version": "1.0.0",
   "kind": "skill",
   "status": "active",
-  "path": "./agent/skills/skill-search",
+  "path": "./.agent/skills/skill-search",
   "dependencies": []
 }
 ```
@@ -86,7 +86,7 @@
   "version": "1.0.0",
   "kind": "skill",
   "status": "active",
-  "path": "./agent/skills/manifest-updater",
+  "path": "./.agent/skills/manifest-updater",
   "dependencies": [],
   "type": "utility",
   "tier": "all",
@@ -123,7 +123,7 @@
   "version": "0.9.0",
   "kind": "skill",
   "status": "deprecated",
-  "path": "./agent/skills/old-validator",
+  "path": "./.agent/skills/old-validator",
   "dependencies": []
 }
 ```
@@ -134,7 +134,7 @@
 
 | Plano | Ruta | Inicializar con |
 |---|---|---|
-| Core / Infraestructura | `./agent/manifest.json` | `--plane agent` |
+| Core / Infraestructura | `./.agent/manifest.json` | `--plane agent` |
 | Catálogo / Cliente | `./catalogo/manifest.json` | `--plane catalogo` |
 | Paquete de proyecto | `./output/[nombre]/package-manifest.json` | `--plane package --project-name [nombre]` |
 

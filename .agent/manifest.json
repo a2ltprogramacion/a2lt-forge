@@ -10,7 +10,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/yaml-validator",
+      "path": "./.agent/skills/yaml-validator",
       "status": "active",
       "description": "Validates YAML files against JSON schema. Essential for component metadata validation (§3.4).",
       "dependencies": {
@@ -35,7 +35,7 @@
       "version": "1.0.0",
       "kind": "agent",
       "type": "utility",
-      "path": "./agent/agents/component-auditor",
+      "path": "./.agent/agents/component-auditor",
       "status": "active",
       "description": "Validates La Forja components before deployment. Executes audits in Step 7 of forge dynamics (§7.2, §7.3).",
       "dependencies": {
@@ -61,7 +61,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/skill-search",
+      "path": "./.agent/skills/skill-search",
       "status": "active",
       "description": "Searches external sources for existing skills, agents, templates before forging new components. Activate at Paso 1 of any forge flow.",
       "dependencies": {
@@ -78,7 +78,7 @@
       "version": "2.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/skill-creator-pro",
+      "path": "./.agent/skills/skill-creator-pro",
       "status": "active",
       "description": "Meta-skill that generates new skills for La Forja ecosystem. Activate at Paso 3 (Construction phase) of forge flow.",
       "dependencies": {
@@ -101,7 +101,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/brainstorming",
+      "path": "./.agent/skills/brainstorming",
       "status": "active",
       "description": "Design ideation skill. Translates requirements and external intelligence into structured design proposals. Activate at Paso 2 of any forge flow.",
       "dependencies": {
@@ -123,7 +123,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/manifest-updater",
+      "path": "./.agent/skills/manifest-updater",
       "status": "active",
       "description": "Manages La Forja's three manifest files: ./.agent/manifest.json, ./catalogo/manifest.json, ./output/[project]/package-manifest.json. Handles add, update, deprecate, and validation operations.",
       "dependencies": {
@@ -139,7 +139,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/journal-writer",
+      "path": "./.agent/skills/journal-writer",
       "status": "active",
       "description": "Writes, validates, and manages La Forja's institutional memory journal. Activate when closing forge tasks, resolving problems, documenting ADRs, or field feedback.",
       "dependencies": {
@@ -162,7 +162,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/rag-query",
+      "path": "./.agent/skills/rag-query",
       "status": "active",
       "description": "Queries local ChromaDB index for existing components and patterns. First-pass discovery at Paso 0 of any forge flow.",
       "dependencies": {
@@ -179,7 +179,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/rag-indexer",
+      "path": "./.agent/skills/rag-indexer",
       "status": "active",
       "description": "Builds and updates ChromaDB vector index. Activate automatically at Paso 7 post-deployment or manually for re-indexing.",
       "dependencies": {
@@ -196,7 +196,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/agent-creator-pro",
+      "path": "./.agent/skills/agent-creator-pro",
       "status": "active",
       "description": "Meta-skill that generates new autonomous agents. Activate when operator requests designing orchestrators or coordinators.",
       "dependencies": {
@@ -229,7 +229,7 @@
       "version": "1.0.0",
       "kind": "skill",
       "type": "utility",
-      "path": "./agent/skills/context7-resolver",
+      "path": "./.agent/skills/context7-resolver",
       "status": "active",
       "description": "Integra el servidor MCP context7 para la búsqueda de documentación actualizada y ejemplos de código reales.",
       "dependencies": {
@@ -238,7 +238,8 @@
       },
       "compatibility": {
         "python": ">=3.10"
-      }
+      },
+      "notes": "Skill High Freedom. No tiene inputs o scripts definidos. Interfaz MCP directa."
     }
   ],
   "metadata": {

@@ -1,8 +1,10 @@
 {
+  "schema_version": "2.0.0",
+  "plane": "catalogo",
   "ecosystem": "La Forja - Catálogo",
   "version": "2.3.0",
   "description": "Manifest of production-ready agents and skills in the Catalog layer (./catalogo/)",
-  "last_updated": "2026-03-11T14:30:00Z",
+  "last_updated": "2026-03-12T12:02:37Z",
   "last_author": "Argenis",
   "components": [
     {
@@ -16,17 +18,29 @@
       "dependencies": {
         "internal": [],
         "external": [
-          {"name": "python-dotenv", "version": ">=1.0.0", "reason": "Load GHL credentials from .env"}
+          {
+            "name": "python-dotenv",
+            "version": ">=1.0.0",
+            "reason": "Load GHL credentials from .env"
+          }
         ]
       },
       "compatibility": {
         "python": ">=3.10"
       },
       "external_apis": [
-        {"service": "GoHighLevel API v2", "endpoint": "https://services.leadconnectorhq.com/conversation-ai/agents/search", "auth": "Bearer token"}
+        {
+          "service": "GoHighLevel API v2",
+          "endpoint": "https://services.leadconnectorhq.com/conversation-ai/agents/search",
+          "auth": "Bearer token"
+        }
       ],
       "notes": "Production-ready Catálogo skill. Requires GHL_API_KEY and GHL_LOCATION_ID in .env. Zero external Python dependencies for core functionality (urllib is stdlib).",
-      "audit": {"methodology": "skill-creator-pro Pasos 0-4", "date": "2026-03-11", "verdict": "ACEPTADA"}
+      "audit": {
+        "methodology": "skill-creator-pro Pasos 0-4",
+        "date": "2026-03-11",
+        "verdict": "ACEPTADA"
+      }
     },
     {
       "name": "ghl-list-calendars",
@@ -39,17 +53,43 @@
       "dependencies": {
         "internal": [],
         "external": [
-          {"name": "python-dotenv", "version": ">=1.0.0", "reason": "Load GHL credentials from .env"}
+          {
+            "name": "python-dotenv",
+            "version": ">=1.0.0",
+            "reason": "Load GHL credentials from .env"
+          }
         ]
       },
       "compatibility": {
         "python": ">=3.10"
       },
       "external_apis": [
-        {"service": "GoHighLevel API v2", "endpoint": "https://services.leadconnectorhq.com/calendars/?locationId=...", "auth": "Bearer token"}
+        {
+          "service": "GoHighLevel API v2",
+          "endpoint": "https://services.leadconnectorhq.com/calendars/?locationId=...",
+          "auth": "Bearer token"
+        }
       ],
       "notes": "Production-ready Catálogo skill. Requires GHL_API_KEY and GHL_LOCATION_ID in .env. Zero external Python dependencies (urllib is stdlib). Fully functional as of 11 marzo 2026.",
-      "audit": {"methodology": "skill-creator-pro Pasos 0-7", "date": "2026-03-11", "verdict": "ACEPTADA - PRODUCCIÓN"}
+      "audit": {
+        "methodology": "skill-creator-pro Pasos 0-7",
+        "date": "2026-03-11",
+        "verdict": "ACEPTADA - PRODUCCIÓN"
+      }
+    },
+    {
+      "name": "stitch-designer",
+      "version": "1.0.0",
+      "kind": "skill",
+      "status": "active",
+      "path": "./catalogo/skills/stitch-designer",
+      "dependencies": {
+        "internal": [],
+        "external": []
+      },
+      "type": "utility",
+      "tier": "all",
+      "description": "Orquesta y diseña interfaces de usuario utilizando las herramientas del servidor MCP StitchMCP."
     }
   ],
   "metadata": {

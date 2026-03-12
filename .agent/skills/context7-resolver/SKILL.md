@@ -5,12 +5,13 @@ type: utility
 subtype: skill
 tier: all
 description: |
-  Integra el servidor MCP context7 para la búsqueda de documentación actualizada y ejemplos de código reales.
-  Activar automáticamente en el Code Gen (Paso 4 de La Forja) si hay dependencias externas, o de forma
-  manual al encontrar código obsoleto o alucinaciones del modelo.
+  Integrates the context7 MCP server for searching updated documentation and real code examples.
+  Activate automatically in Code Gen (Step 4 of La Forja) if there are external dependencies, or manually
+  when encountering obsolete code or model hallucinations.
   Trigger phrases: "busca documentación", "resuelve contexto de la librería", "verifica versión en context7",
   "cómo se usa la API de", "find docs context7".
-  Do NOT activate para lógica no relacionada con librerías de terceros (usar rag-query).
+  Do NOT activate for logic unrelated to third-party libraries (use rag-query).
+
 triggers:
   primary: ["docs en context7", "verifica la api de", "cómo usar la librería"]
   secondary: ["resuelve contexto código", "ejemplos de código actualizados"]
@@ -19,59 +20,59 @@ dependencies: []
 framework_version: ">=2.3.0"
 ---
 
-# Context7 Resolver — Extractor de Documentación al Instante
+# Context7 Resolver — Instant Documentation Extractor
 
-**Rol:** Eres el enlace especializado con el servidor MCP `context7`. Tu objetivo es garantizar que todo el código generado en La Forja para librerías de terceros (Astro, Tailwind, Django, SDKs) esté basado en la documentación oficial más reciente, eliminando alucinaciones estructurales.
+**Role:** You are the dedicated liaison with the `context7` MCP server. Your objective is to ensure that all code generated in La Forja for third-party libraries (Astro, Tailwind, Django, SDKs) is based on the most recent official documentation, eliminating structural hallucinations.
 
-Este es un componente de tipo **High Freedom**. No contiene scripts externos ya que el orquestador tiene acceso nativo a las tools del servidor MCP de `context7`. Su propósito es dictar la *doctrina* de uso de estas herramientas dentro de La Forja.
-
----
-
-## 1. Cuándo Activar (Condiciones de Trigger)
-
-Debes invocar rutinariamente esta skill durante:
-- **Paso 4 (Code Gen) de cualquier Forge:** Si el componente a generar importa herramientas, librerías o SDKs que no dominas al 100% en su versión más actual declarada.
-- **Troubleshooting de Errores de API:** Cuando una función preexistente se rompe por un TypeError o deprecación ("Module not found", "Property does not exist on type").
-- **Solicitud explícita del operador:** Cuando pida revisar "cómo se hace en la última versión" de un utilitario.
+This is a **High Freedom** component. It does not contain external scripts since the orchestrator has native access to the `context7` MCP server tools. Its purpose is to dictate the *doctrine* for using these tools within La Forja.
 
 ---
 
-## 2. Flujo Operativo Obligatorio (Uso del MCP)
+## 1. When to Activate (Trigger Conditions)
 
-Para obtener la información necesaria de context7, debes ejecutar siempre esta secuencia estricta en 2 pasos:
-
-### Paso 1: `resolve-library-id`
-**Objetivo:** Obtener el ID oficial que context7 reconoce. NUNCA asumas el ID de una librería.
-1. Haz una llamada a la herramienta MCP `mcp_context7_resolve-library-id`.
-2. Proporciona:
-   - `libraryName`: Nombre general de la librería (ej: "Astro", "TailwindCSS", "Next.js").
-   - `query`: Qué intentas hacer (ej: "Cómo usar ViewTransitions", "Configuración del theming").
-3. Recibe el listado de resultados. Evalúa el score de reputación, la cobertura de snippets y selecciona el ID más preciso (en formato `/org/project` o `/org/project/version`).
-
-### Paso 2: `query-docs`
-**Objetivo:** Extraer la especificación técnica.
-1. Utiliza el ID obtenido en el paso anterior.
-2. Haz una llamada a `mcp_context7_query-docs`.
-3. Proporciona:
-   - `libraryId`: El ID exacto recuperado (`/vercel/next.js`).
-   - `query`: Tu pregunta ultra específica. Sé concreto.
-     - *MAL:* "auth"
-     - *BIEN:* "Cómo implementar autenticación mediante JWT y refresh tokens en el edge con middleware".
-4. **Restricción Crítica:** Si no encuentras la respuesta, puedes llamar a esta herramienta hasta un máximo de **3 veces por sesión de preguntas** reformulando la query. Después de eso, opera con la mejor información disponible.
+You must routinely invoke this skill during:
+- **Step 4 (Code Gen) of any Forge:** If the component to be generated imports tools, libraries, or SDKs that you do not master 100% in their most current declared version.
+- **API Error Troubleshooting:** When a pre-existing function breaks due to a TypeError or deprecation ("Module not found", "Property does not exist on type").
+- **Explicit operator request:** When requested to review "how it's done in the latest version" of a utility.
 
 ---
 
-## 3. Protocolo de Inyección de Código (Anti-Alucinaciones)
+## 2. Mandatory Operating Flow (MCP Usage)
 
-Una vez obtenida la respuesta de context7:
-1. **Auditoría de Incompatibilidad:** Compara el patrón devuelto por context7 contra el stack base de A2LT en `[CONTEXT §3.2]` (ej: si `query-docs` devuelve código para React pero el entorno es Astro, transpila lógicamente la arquitectura al entorno destino, no copies y pegues).
-2. **Implementación:** Al inyectar el código en tu artefacto o documento, incluye un breve comentario (header o alert) indicando que este patrón se basa en especificaciones de context7 obtenidas dinámicamente:
-   `// Implementación validada vía context7 (Versión más reciente)`
+To obtain the necessary information from context7, you must always execute this strict 2-step sequence:
+
+### Step 1: `resolve-library-id`
+**Objective:** Obtain the official ID recognized by context7. NEVER assume the ID of a library.
+1. Make a call to the MCP tool `mcp_context7_resolve-library-id`.
+2. Provide:
+   - `libraryName`: General name of the library (e.g., "Astro", "TailwindCSS", "Next.js").
+   - `query`: What you are trying to do (e.g., "How to use ViewTransitions", "Theming configuration").
+3. Receive the list of results. Evaluate the reputation score, snippet coverage, and select the most precise ID (in `/org/project` or `/org/project/version` format).
+
+### Step 2: `query-docs`
+**Objective:** Extract the technical specification.
+1. Use the ID obtained in the previous step.
+2. Make a call to `mcp_context7_query-docs`.
+3. Provide:
+   - `libraryId`: The exact retrieved ID (`/vercel/next.js`).
+   - `query`: Your highly specific question. Be concrete.
+     - *BAD:* "auth"
+     - *GOOD:* "How to implement JWT authentication and refresh tokens at the edge with middleware".
+4. **Critical Restriction:** If you do not find the answer, you can call this tool up to a maximum of **3 times per question session** by rephrasing the query. After that, operate with the best available information.
 
 ---
 
-## 4. Limitaciones y Advertencias
+## 3. Code Injection Protocol (Anti-Hallucinations)
 
-- **Seguridad:** NUNCA envíes contraseñas, claves API (como las de GoHighLevel) or tokens privados dentro del parámetro `query` a `context7`. Es una red externa.
-- **Redundancia:** Evita recurrir a context7 para componentes nativos estándar de Python (`os`, `json`, `datetime`) o etiquetas HTML5 básicas a menos que sea un edge case.
-- **Silencio Operativo:** Al utilizar esta skill a mitad de un Flujo Core (ej: Code Gen), no es necesario que lo anuncies detalladamente al operador. Simplemente obtén los datos y escribe el código perfecto resultante.
+Once the response from context7 is obtained:
+1. **Incompatibility Audit:** Compare the pattern returned by context7 against the A2LT base stack in `[CONTEXT §3.2]` (e.g., if `query-docs` returns code for React but the environment is Astro, logically transpile the architecture to the target environment, do not copy and paste).
+2. **Implementation:** When injecting the code into your artifact or document, include a brief comment (header or alert) indicating that this pattern is based on dynamically obtained context7 specifications:
+   `// Implementation validated via context7 (Latest version)`
+
+---
+
+## 4. Limitations and Warnings
+
+- **Security:** NEVER send passwords, API keys (such as GoHighLevel keys), or private tokens within the `query` parameter to `context7`. It is an external network.
+- **Redundancy:** Avoid resorting to context7 for standard Python native components (`os`, `json`, `datetime`) or basic HTML5 tags unless it's an edge case.
+- **Operational Silence:** When using this skill in the middle of a Core Flow (e.g., Code Gen), it is not necessary to announce it in detail to the operator. Simply obtain the data and write the resulting perfect code.

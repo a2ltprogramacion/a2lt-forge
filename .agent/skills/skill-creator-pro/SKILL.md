@@ -99,7 +99,7 @@ Execute steps sequentially. Each has an exit criterion. Do not advance without m
 {
   "task_id": "[YYYYMMDD-HHMMSS]_[skill-name]",
   "flow": "core | catalogo",
-  "target_path": "./agent/skills/[name] | ./catalogo/skills/[name]",
+  "target_path": "./.agent/skills/[name] | ./catalogo/skills/[name]",
   "actor": "operador",
   "requested_artifacts": ["SKILL.md"],
   "affected_components": ["[skill-name]"],
@@ -183,7 +183,7 @@ Activate if similar functionality exists externally.
 
 1. Invoke `skill-search` to locate similar implementations in external repositories.
 2. Download assets **exclusively** to `./quarantine_lab/[id]/referencias/`. Never install
-   third-party skills directly into `./catalogo/` or `./agent/`.
+   third-party skills directly into `./catalogo/` or `./.agent/`.
 3. Deconstruct the quarantined material:
    - Proprietary logic that makes the external tool work
    - Failure nodes where it breaks or feels bloated
@@ -298,9 +298,9 @@ that exceed reliable single-pass generation quality.
 Instruct the operator to run:
 
 ```bash
-python ./agent/skills/skill-creator-pro/scripts/generate_skill_files.py \
+python ./.agent/skills/skill-creator-pro/scripts/generate_skill_files.py \
   --spec '<blueprint_json>' \
-  --output ./agent/skills/   # or ./catalogo/skills/
+  --output ./.agent/skills/   # or ./catalogo/skills/
 ```
 
 Use `--force` flag only if updating an existing skill (creates `.bak` backups automatically).
@@ -320,8 +320,8 @@ If JSON fails due to size: use `write_to_file` to generate files one by one.
 
 Run:
 ```bash
-python ./agent/skills/skill-creator-pro/scripts/run_skill_tests.py \
-  ./agent/skills/[skill-name]/
+python ./.agent/skills/skill-creator-pro/scripts/run_skill_tests.py \
+  ./.agent/skills/[skill-name]/
 ```
 
 Script clones the skill into a sandbox inside `quarantine_lab/`, runs all scripts
@@ -337,7 +337,7 @@ Execute in order:
 
 1. **Structural validation:**
    ```bash
-   python ./agent/skills/skill-creator-pro/scripts/validate_skill_structure.py \
+   python ./.agent/skills/skill-creator-pro/scripts/validate_skill_structure.py \
      ./quarantine_lab/[id]/[skill-name]/
    ```
    Fix all errors before continuing. Do not skip.
@@ -358,10 +358,10 @@ Execute in order:
 4. **Backup + deploy:**
    ```bash
    # Backup current destination state (if updating)
-   cp -r ./agent/skills/[name]/ ./quarantine_lab/[id]/backup-pre-deploy/
+   cp -r ./.agent/skills/[name]/ ./quarantine_lab/[id]/backup-pre-deploy/
 
    # Move from quarantine to destination
-   mv ./quarantine_lab/[id]/[skill-name]/ ./agent/skills/[name]/
+   mv ./quarantine_lab/[id]/[skill-name]/ ./.agent/skills/[name]/
    # or ./catalogo/skills/[name]/ if Catálogo
    ```
 
@@ -396,17 +396,17 @@ Activate for Deterministic skills requiring high reliability or optimized trigge
 
 2. **Task runner:**
    ```bash
-   python ./agent/skills/skill-creator-pro/scripts/a2lt_task_runner.py \
+   python ./.agent/skills/skill-creator-pro/scripts/a2lt_task_runner.py \
      --eval-set tests/evals.json \
      --skill-path ./catalogo/skills/[name]/ \
      --runs-per-query 3 \
-     --output-dir ./agent/logs/telemetry/
+     --output-dir ./.agent/logs/telemetry/
    ```
 
 3. **Telemetry aggregation:**
    ```bash
-   python ./agent/skills/skill-creator-pro/scripts/a2lt_telemetry_extractor.py \
-     --output-dir ./agent/logs/telemetry/
+   python ./.agent/skills/skill-creator-pro/scripts/a2lt_telemetry_extractor.py \
+     --output-dir ./.agent/logs/telemetry/
    ```
 
 4. **Visual analysis:** Load `timing.json` with `assets/a2lt_eval_viewer_theme.css`

@@ -341,7 +341,7 @@ def main():
     parser.add_argument(
         "--journal-dir",
         default=None,
-        help="Ruta al directorio del journal. Por defecto: ./agent/memory/journal/ desde raíz."
+        help="Ruta al directorio del journal. Por defecto: ./.agent/memory/journal/ desde raíz."
     )
     parser.add_argument(
         "--since-entry",
