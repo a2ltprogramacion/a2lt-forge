@@ -1,0 +1,252 @@
+{
+  "ecosystem": "La Forja - Core Toolkit",
+  "version": "2.3.0",
+  "description": "Manifest of internal agents and skills deployed in the Core layer (./.agent/)",
+  "last_updated": "2026-03-11T13:00:00Z",
+  "last_author": "Argenis",
+  "components": [
+    {
+      "name": "yaml-validator",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/yaml-validator",
+      "status": "active",
+      "description": "Validates YAML files against JSON schema. Essential for component metadata validation (§3.4).",
+      "dependencies": {
+        "internal": [],
+        "external": [
+          {
+            "name": "pyyaml",
+            "version": ">=6.0"
+          },
+          {
+            "name": "jsonschema",
+            "version": ">=4.17"
+          }
+        ]
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      }
+    },
+    {
+      "name": "component-auditor",
+      "version": "1.0.0",
+      "kind": "agent",
+      "type": "utility",
+      "path": "./agent/agents/component-auditor",
+      "status": "active",
+      "description": "Validates La Forja components before deployment. Executes audits in Step 7 of forge dynamics (§7.2, §7.3).",
+      "dependencies": {
+        "internal": [
+          {
+            "name": "yaml-validator",
+            "version": ">=1.0.0"
+          }
+        ],
+        "external": [
+          {
+            "name": "pyyaml",
+            "version": ">=6.0"
+          }
+        ]
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      }
+    },
+    {
+      "name": "skill-search",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/skill-search",
+      "status": "active",
+      "description": "Searches external sources for existing skills, agents, templates before forging new components. Activate at Paso 1 of any forge flow.",
+      "dependencies": {
+        "internal": [],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "notes": "Core intelligence tool. No external dependencies to avoid coupling."
+    },
+    {
+      "name": "skill-creator-pro",
+      "version": "2.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/skill-creator-pro",
+      "status": "active",
+      "description": "Meta-skill that generates new skills for La Forja ecosystem. Activate at Paso 3 (Construction phase) of forge flow.",
+      "dependencies": {
+        "internal": [
+          {
+            "name": "rag-query",
+            "version": ">=1.0.0",
+            "optional": false
+          }
+        ],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "notes": "Unblocked: rag-query is now active. Enables full Paso 3 construction workflows."
+    },
+    {
+      "name": "brainstorming",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/brainstorming",
+      "status": "active",
+      "description": "Design ideation skill. Translates requirements and external intelligence into structured design proposals. Activate at Paso 2 of any forge flow.",
+      "dependencies": {
+        "internal": [
+          {
+            "name": "skill-search",
+            "version": ">=1.0.0",
+            "optional": true
+          }
+        ],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      }
+    },
+    {
+      "name": "manifest-updater",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/manifest-updater",
+      "status": "active",
+      "description": "Manages La Forja's three manifest files: ./.agent/manifest.json, ./catalogo/manifest.json, ./output/[project]/package-manifest.json. Handles add, update, deprecate, and validation operations.",
+      "dependencies": {
+        "internal": [],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      }
+    },
+    {
+      "name": "journal-writer",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/journal-writer",
+      "status": "active",
+      "description": "Writes, validates, and manages La Forja's institutional memory journal. Activate when closing forge tasks, resolving problems, documenting ADRs, or field feedback.",
+      "dependencies": {
+        "internal": [
+          {
+            "name": "rag-indexer",
+            "version": ">=1.0.0",
+            "optional": true
+          }
+        ],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "notes": "rag-indexer is optional for journal-writer to function. Priority: can write without it."
+    },
+    {
+      "name": "rag-query",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/rag-query",
+      "status": "active",
+      "description": "Queries local ChromaDB index for existing components and patterns. First-pass discovery at Paso 0 of any forge flow.",
+      "dependencies": {
+        "internal": [],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "notes": "Bootstrap skill (Opción 3, 11 marzo 2026). Ready for RAG-enabled discovery pipelines."
+    },
+    {
+      "name": "rag-indexer",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/rag-indexer",
+      "status": "active",
+      "description": "Builds and updates ChromaDB vector index. Activate automatically at Paso 7 post-deployment or manually for re-indexing.",
+      "dependencies": {
+        "internal": [],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "notes": "Bootstrap skill (Opción 3, 11 marzo 2026). Post-deployment indexing integrated."
+    },
+    {
+      "name": "agent-creator-pro",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/agent-creator-pro",
+      "status": "active",
+      "description": "Meta-skill that generates new autonomous agents. Activate when operator requests designing orchestrators or coordinators.",
+      "dependencies": {
+        "internal": [
+          {
+            "name": "rag-query",
+            "version": ">=1.0.0",
+            "optional": false
+          },
+          {
+            "name": "brainstorming",
+            "version": ">=1.0.0",
+            "optional": false
+          },
+          {
+            "name": "yaml-validator",
+            "version": ">=1.0.0",
+            "optional": true
+          }
+        ],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "notes": "Bootstrap skill (Opción 3, 11 marzo 2026). Full agent lifecycle support + orchestration."
+    },
+    {
+      "name": "context7-resolver",
+      "version": "1.0.0",
+      "kind": "skill",
+      "type": "utility",
+      "path": "./agent/skills/context7-resolver",
+      "status": "active",
+      "description": "Integra el servidor MCP context7 para la búsqueda de documentación actualizada y ejemplos de código reales.",
+      "dependencies": {
+        "internal": [],
+        "external": []
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      }
+    }
+  ],
+  "metadata": {
+    "source_url": "./.agent/manifest.json",
+    "is_canonical_source": true,
+    "schema_version": "1.0.0",
+    "notes": "Este manifiesto es la fuente de verdad para validación de dependencias en el Core. Actualizar SOLO al desplegar exitosamente (Paso 7 de dinámicas §7.2/7.3)."
+  },
+  "schema_version": "2.0.0",
+  "plane": "agent"
+}

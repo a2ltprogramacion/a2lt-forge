@@ -13,8 +13,8 @@
       "kind": "skill",
       "type": "integration",
       "path": "./catalogo/skills/ghl-list-ai-agents",
-      "status": "active",
-      "description": "Retrieves list of Conversation AI agents from GoHighLevel account. Primary use: agent auditing, deployment verification, and metadata collection for orchestration workflows.",
+      "status": "deprecated",
+      "description": "[DEPRECADO - USAR ghl-master-skill] Retrieves list of Conversation AI agents from GoHighLevel account.",
       "dependencies": {
         "internal": [],
         "external": [
@@ -35,11 +35,11 @@
           "auth": "Bearer token"
         }
       ],
-      "notes": "Production-ready Catálogo skill. Requires GHL_API_KEY and GHL_LOCATION_ID in .env. Zero external Python dependencies for core functionality (urllib is stdlib).",
+      "notes": "Deprecated in favor of ghl-master-skill.",
       "audit": {
         "methodology": "skill-creator-pro Pasos 0-4",
         "date": "2026-03-11",
-        "verdict": "ACEPTADA"
+        "verdict": "DEPRECADA"
       }
     },
     {
@@ -48,8 +48,8 @@
       "kind": "skill",
       "type": "integration",
       "path": "./catalogo/skills/ghl-list-calendars",
-      "status": "active",
-      "description": "Retrieves list of all calendars from GoHighLevel account using API v2. Primary use: calendar discovery, availability verification, and metadata collection for scheduling automation workflows.",
+      "status": "deprecated",
+      "description": "[DEPRECADO - USAR ghl-master-skill] Retrieves list of all calendars from GoHighLevel account using API v2.",
       "dependencies": {
         "internal": [],
         "external": [
@@ -70,10 +70,43 @@
           "auth": "Bearer token"
         }
       ],
-      "notes": "Production-ready Catálogo skill. Requires GHL_API_KEY and GHL_LOCATION_ID in .env. Zero external Python dependencies (urllib is stdlib). Fully functional as of 11 marzo 2026.",
+      "notes": "Deprecated in favor of ghl-master-skill.",
       "audit": {
         "methodology": "skill-creator-pro Pasos 0-7",
         "date": "2026-03-11",
+        "verdict": "DEPRECADA"
+      }
+    },
+    {
+      "name": "ghl-master-skill",
+      "version": "2.0.0",
+      "kind": "skill",
+      "type": "integration",
+      "path": "./catalogo/skills/ghl-master-skill",
+      "status": "active",
+      "description": "Enterprise-grade GHL Master Integration. Consolidates 11 core modules (Contacts, AI, Automations, SaaS, etc.). Fully validated with Agency and Location level access.",
+      "dependencies": {
+        "internal": [],
+        "external": [
+          {
+            "name": "httpx",
+            "version": ">=0.24.0",
+            "reason": "Async HTTP requests"
+          },
+          {
+            "name": "python-dotenv",
+            "version": ">=1.0.0",
+            "reason": "Configuration management"
+          }
+        ]
+      },
+      "compatibility": {
+        "python": ">=3.10"
+      },
+      "notes": "Validated module by module (contacts, calendars, ai-agents, workflows, opportunities, convos, social, saas). Supports dynamic Auth with automatic token management.",
+      "audit": {
+        "methodology": "La Forja - Auditoría Total (Cero Suposiciones)",
+        "date": "2026-03-12",
         "verdict": "ACEPTADA - PRODUCCIÓN"
       }
     },
