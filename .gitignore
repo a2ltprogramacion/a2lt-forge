@@ -57,9 +57,6 @@ env/
 rag/index/**/*.db
 rag/index/**/*.parquet
 
-# Quarantine lab — temporal, se limpia automáticamente
-quarantine_lab/*/
-
 # Build artifacts
 output/**/.*
 output/**/*.pyc

@@ -1,0 +1,46 @@
+{
+  "project": "ghl-master-skill",
+  "flow": "Forge Catalog",
+  "target_path": "./catalogo/skills/ghl-master-skill",
+  "actor": "Antigravity",
+  "requested_artifacts": [
+    "SKILL.md",
+    "README.md",
+    "scripts/main.py",
+    "scripts/core/*",
+    "scripts/modules/*"
+  ],
+  "assumptions": [
+    "Se asume que el operador proveerá GHL_API_KEY o credenciales OAuth2 vía .env."
+  ],
+  "accepted_risks": [
+    "Funnels (Sites) y System requieren companyId específico que puede variar en producción.",
+    "El modo OAuth2 requiere configuración manual de ClientID y Secret para rotación automática completa."
+  ],
+  "validation_status": "VALIDATED",
+  "rag_query": "Soporte total API 2.0 verificado",
+  "step": "Paso 7 — Validación Final Exitosa",
+  "affected_components": [
+    "scripts/core/auth.py",
+    "scripts/core/client.py",
+    "scripts/core/limiter.py",
+    "scripts/modules/contacts.py",
+    "scripts/modules/calendars.py",
+    "scripts/modules/conversations.py",
+    "scripts/modules/opportunities.py",
+    "scripts/modules/payments.py",
+    "scripts/modules/automations.py",
+    "scripts/modules/content.py",
+    "scripts/modules/saas.py",
+    "scripts/modules/ai.py",
+    "scripts/modules/social.py",
+    "scripts/modules/system.py",
+    "scripts/main.py",
+    "SKILL.md"
+  ],
+  "incident_log": [
+    "Error 422 en search_contacts: Corregido limit -> pageLimit",
+    "Error 422 en opportunities: Corregido locationId -> location_id",
+    "Error 404 en AI y Social: Corregidas rutas y versiones dinámicas"
+  ]
+}
